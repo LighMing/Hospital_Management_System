@@ -1,5 +1,5 @@
 import json
-import uuid
+import random
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 
@@ -22,6 +22,9 @@ def find_user(data, username):
         if user['username'] == username:
             return user
 
+def generate_short_id(length=6):
+    num = random.randint(10 ** (length - 1), 10 ** length - 1)
+    return str(num)
 
 def sign_up(as_admin=False):
     data = load_data()
@@ -142,7 +145,7 @@ def add_doctor():
     start_time = simpledialog.askstring("Add Doctor", "Enter available start time (HH:MM):")
     end_date = simpledialog.askstring("Add Doctor", "Enter available end date (YYYY-MM-DD):")
     end_time = simpledialog.askstring("Add Doctor", "Enter available end time (HH:MM):")
-    doctor_id = str(uuid.uuid4())
+    doctor_id = generate_short_id()
     doctor = {
         "id": doctor_id,
         "name": name,
@@ -230,7 +233,7 @@ def book_appointment(user):
         if doctor['id'] == doctor_id:
             slots = doctor['available_slots']
             if slots['start'] <= desired_datetime <= slots['end']:
-                appointment_id = str(uuid.uuid4())
+                appointment_id = generate_short_id()
                 appointment = {
                     "id": appointment_id,
                     "patient_username": user['username'],
